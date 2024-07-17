@@ -1,6 +1,10 @@
-:root {
+:root[theme="light"] {
     --color-bg: hsl(0, 0%, 95%);
+    --color-svg: hsl(0, 0%, 20%);
+    --color-text: hsl(0, 0%, 27%);
+    --color-title: hsl(102, 49%, 51%);
+    --color-border: hsl(0, 0%, 90%);
     --color-card-bg: hsl(0, 0%, 98%);
     --color-selected-svg: hsl(208, 100%, 38%);
-    --color-border: hsl(0, 0%, 90%);
+    --color-search-strong: hsl(182, 25%, 50%);
 }

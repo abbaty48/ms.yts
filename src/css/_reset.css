@@ -181,7 +181,7 @@ html {
 
 body {
     min-height: 100vh;
-    font: 400 normal 1.4rem/2rem Saira;
+    font: 400 normal 1.2rem/2rem Poppins, 'Alegreya Sans';
 }
 
 svg {
@@ -191,6 +191,8 @@ svg {
 svg:not(.exclude) {
     width: 2rem;
     height: 2rem;
+    fill: var(--color-svg);
+    stroke: var(--color-svg);
 }
 
 .container {

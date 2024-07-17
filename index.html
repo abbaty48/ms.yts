@@ -1,17 +1,82 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" theme="light">
 
 <head>
-    <title>Moviestore</title>
+    <title>Moviestore - MS.yts</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link type="text/css" href="src/css/main.css" rel="stylesheet" />
 </head>
 
 <body>
- 
+    <header>
+        <a href="#" aria-label="Movies store yts.com">
+            <svg>
+                <use xlink:href="./src/svgs/site_symbols.svg#logo" />
+            </svg>
+            <span>MS.yts</span>
+        </a>
+        <form id="searchForm">
+            <div class="input-group" role="searchbox">
+                <input type="search" title="Search for a movie using either a Movie Title, Actor Name, Director Name"
+                    placeholder="Search for a movie by Movie Title, Actor Name, Director Name"
+                    aria-label="Search for any movie here." role="search">
+                <button id="filterButton" type="button" title="Filter the searching..."
+                    aria-label="Filter the search terms">
+                    <svg>
+                        <use xlink:href="./src/svgs/site_symbols.svg#bx-filter" />
+                    </svg>
+                </button>
+                <button type="submit" aria-label="Search">
+                    <svg>
+                        <use xlink:href="./src/svgs/site_symbols.svg#bx-search" />
+                    </svg>
+                </button>
+            </div>
+            <div id="sPanelResult">
+                <div id="sPanelResultTop">
+                    <button id="closeSPanelBtn" type="button">&times;</button>
+                    <div id="sPanelLoading">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"
+                            width="200" height="200"
+                            style="shape-rendering: auto; display: inline-block; background: transparent;"
+                            xmlns:xlink="http://www.w3.org/1999/xlink">
+                            <g>
+                                <circle stroke-linecap="round" fill="none"
+                                    stroke-dasharray="69.11503837897544 69.11503837897544" stroke="#6ac045"
+                                    stroke-width="10" r="44" cy="50" cx="50">
+                                    <animateTransform values="0 50 50;360 50 50" keyTimes="0;1"
+                                        dur="3.4482758620689653s" repeatCount="indefinite" type="rotate"
+                                        attributeName="transform"></animateTransform>
+                                </circle>
+                                <g></g>
+                            </g>
+                        </svg><strong>Loading more...</strong>
+                    </div>
+                </div>
+                <div id="sPanelData"></div>
+            </div>
+            <div id="sPanelFilter">
+                <label>Genre: <select name="genre"></select></label>
+                <label>Quality: <select name="quality"></select></label>
+                <label>Year: <select name="year"></select></label>
+                <label>Rating: <select name="rating"></select></label>
+                <label>Language: <select name="language"></select></label>
+                <label>OrderBy: <select name="order_by"></select></label>
+                <label>SortBy: <select name="sort_by"></select></label>
+            </div>
+        </form>
+        <button id="theme_switcher" aria-label="Switch to Dark/Light mode.">
+            <svg>
+                <use xlink:href="./src/svgs/site_symbols.svg#bxs-moon" fill="#333" />
+            </svg>
+        </button>
+    </header>
+    <aside></aside>
+    <main></main>
     <script src="./src/lib/jquery-3.7.1.min.js"></script>
-    <script src="./src/lib/main.js"></script>
+    <script src="./src/lib/main.js" type="module">
+    </script>
 </body>
 
 </html>
