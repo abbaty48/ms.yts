@@ -18,10 +18,10 @@
         </a>
         <form id="searchForm">
             <div class="input-group" role="searchbox">
-                <input type="search" title="Search for a movie using either a Movie Title, Actor Name, Director Name"
-                    placeholder="Search for a movie by Movie Title, Actor Name, Director Name"
+                <input type="search" title="Search for a movie using either a Title, Actor Name, or Director Name."
+                    placeholder="Search for movie using Title, Actor Name, Director Name."
                     aria-label="Search for any movie here." role="search">
-                <button id="filterButton" type="button" title="Filter the searching..."
+                <button id="filterButton" type="button" title="Toggle search filtering..."
                     aria-label="Filter the search terms">
                     <svg>
                         <use xlink:href="./src/svgs/site_symbols.svg#bx-filter" />
@@ -72,10 +72,27 @@
             </svg>
         </button>
     </header>
-    <aside></aside>
+    <aside>
+        <menu>
+            <a id="home">
+                <svg>
+                    <use xlink:href="./src/svgs/site_symbols.svg#bxs-home" />
+                </svg>
+            </a>
+        </menu>
+    </aside>
     <main></main>
     <script src="./src/lib/jquery-3.7.1.min.js"></script>
-    <script src="./src/lib/main.js" type="module">
+    <script src="./src/lib/main.js" type="module"></script>
+    <script src="./src/lib/plugins/jquery.pageloader.js"></script>
+    <script>
+        $('main').pageLoader(
+            {
+                pages: [
+                    { triggerSelector: '#home', pageUrl: './src/pages/home.html', active: true },
+                ],
+            }
+        )
     </script>
 </body>
 
