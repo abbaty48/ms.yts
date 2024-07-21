@@ -1,8 +1,8 @@
 /* FONTS */
 /* RESET */
-@import url('./_reset.css');
+@import url('reset.css');
 /* COLORS */
-@import url('./_color.css');
+@import url('colors.css');
 
 * {
     transition: all .5s;
