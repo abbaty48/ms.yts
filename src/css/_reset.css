@@ -181,7 +181,7 @@ html {
 
 body {
     min-height: 100vh;
-    font: 400 normal 1.2rem/2rem Poppins, 'Alegreya Sans';
+    font: 400 normal 1.2rem/2rem  'Alegreya Sans', Poppins;
 }
 
 svg {

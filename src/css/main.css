@@ -5,11 +5,12 @@
 @import url('./_color.css');
 
 * {
-    transition: all .4s;
+    transition: all .5s;
 }
 
 /*  */
 /* import all jQuery plugin style-sheet */
+
 /* SITE STYLES */
 body {
     display: grid;
@@ -226,7 +227,6 @@ body>header {
             gap: 1em;
             display: none;
             padding: 1em;
-            filter: opacity(60%);
             grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
 
             label {
@@ -322,14 +322,17 @@ body>aside {
 
 body>main {
     grid-area: 2 / 2;
-    border-top-left-radius: 20px;
     overflow-y: auto;
+    border-top-left-radius: 10px;
     border: 1px solid var(--color-border);
     background-color: var(--color-card-bg);
 
     >article>section {
-        height: 45vmax;
-        background-color: white;
+        height: 40vmax;
+        header {
+            margin: 15px;
+        }
+            
     }
 }
 

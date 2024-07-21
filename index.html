@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link type="text/css" href="src/css/main.css" rel="stylesheet" />
+    <link rel="stylesheet" href="src/lib/plugins/jquery.carousel.css">
 </head>
 
 <body>
@@ -85,15 +86,7 @@
     <script src="./src/lib/jquery-3.7.1.min.js"></script>
     <script src="./src/lib/main.js" type="module"></script>
     <script src="./src/lib/plugins/jquery.pageloader.js"></script>
-    <script>
-        $('main').pageLoader(
-            {
-                pages: [
-                    { triggerSelector: '#home', pageUrl: './src/pages/home.html', active: true },
-                ],
-            }
-        )
-    </script>
+    <script src="./src/lib/plugins/jquery.carousel.js"></script>
 </body>
 
-</html>
+</html> 

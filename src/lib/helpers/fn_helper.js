@@ -16,7 +16,7 @@ export const fetchMovies = (function () {
     function getMovies({ query_term, page = 1, parameters } = {}) {
         return new Promise((resolve, reject) => {
             // base search url
-            const yts = new URL(`https://yts.mx/api/v2/list_movies.json?page=${page}&limit=4`);
+            const yts = new URL(`https://yts.mx/api/v2/list_movies.json?page=${page}`);
             // append search term
             (query_term) && (
                 yts.searchParams.append('query_term', query_term)
@@ -25,7 +25,12 @@ export const fetchMovies = (function () {
                 $.each(parameters, function (param, value) {
                     yts.searchParams.append(param, value)
                 })
+                if (!parameters.limit) {
+                    yts.searchParams.append('limit', 4)
+                }
             }
+
+            console.log('UTS ', yts.href);
 
             $.get({
                 url: yts.href,
@@ -63,7 +68,7 @@ export const fetchMovies = (function () {
 /** yearRange  - generate a years from 1900 to the current
  * @returns an array of year between 1900 to the current year
  */
-export  function yearRange() {
+export function yearRange() {
     const years = ['1900'];
     const currentYear = (new Date(Date.now()).getFullYear());
     for (let year = 1900, i = 0; year <= currentYear; year += 10, i++) {

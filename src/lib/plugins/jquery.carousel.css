@@ -1,0 +1,57 @@
+  :root {
+      --carousel-width: 80vmin;
+  }
+
+  .carousel,
+  .carousel>.carousel-wrapper>li {
+      height: 200px;
+      margin: auto;
+      position: relative;
+      overflow: hidden;
+      border-radius: 20px;
+      background-color: #eee;
+      width: var(--carousel-width);
+  }
+
+  .carousel-wrapper {
+      margin: 0;
+      padding: 0;
+  }
+
+  .carousel-wrapper>li {
+      float: left;
+      list-style-type: none;
+  }
+
+  .carousel>.carousel-pagins {
+      position: absolute;
+      bottom: 8px;
+      left: 50%;
+      gap: 10px;
+      display: flex;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      justify-content: center;
+      transform: translateX(-50%);
+  }
+
+  .carousel>.carousel-pagins>li {
+      width: 15px;
+      height: 15px;
+      cursor: pointer;
+      z-index: 1000;
+      border-radius: 50%;
+      background-color: #0005;
+      transition: all .5s ease-in-out;
+
+      &.current {
+          width: 30px;
+          border-radius: 50px;
+          background-color: #0008;
+      }
+
+      &:hover {
+          background-color: #0008;
+      }
+  }
