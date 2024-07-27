@@ -327,28 +327,37 @@ body>main {
     border: 1px solid var(--color-border);
     background-color: var(--color-card-bg);
 
-    >article>section {
-        height: 40vmax;
-        header {
-            margin: 15px;
+    >article {
+        display: grid;
+        height: 100%;
+        gap: 1em;
+        user-select: none;
+        grid-auto-rows: auto;
+        grid-template-columns: 100%;
+        grid-template-rows: 40em auto;
+
+        >section {
+            position: relative;
+            > header {
+                margin: 15px;
+            }
         }
-            
-    }
-}
-
-@media screen and (min-width: 600px) {
-    body>header>form {
-        width: 600px;
-        margin: 0 1em;
     }
 
-    body>header>form>#sPanelResult {
-        header {
-            border-bottom: 1px solid #0002;
+    @media screen and (min-width: 600px) {
+        body>header>form {
+            width: 600px;
+            margin: 0 1em;
         }
 
-        table {
-            display: table !important;
+        body>header>form>#sPanelResult {
+            header {
+                border-bottom: 1px solid #0002;
+            }
+
+            table {
+                display: table !important;
+            }
         }
     }
 }

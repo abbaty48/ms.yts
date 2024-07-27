@@ -1,4 +1,4 @@
-customElements.define('ms-carousel', class extends HTMLElement {
+customElements.define('ms-rm-carousel', class extends HTMLElement {
     #currentIndex = 0;
     #isLoading = true;
     #onplay = false;
@@ -8,20 +8,58 @@ customElements.define('ms-carousel', class extends HTMLElement {
 
     constructor() {
         super();
-        const template = document.createElement('template');
-        template.innerHTML = `
+        this.attachShadow({ mode: 'open' }).innerHTML = `
             <style>
 
                 @keyframes loading {50% {opacity: 0.1;}}
-        
+                @media screen and (max-width: 425px) {
+                    .carousel{
+                        .carousel-wrapper{
+                            > ul { >li.current{
+                                    width: 25em !important;
+                                }
+                            }
+                        }
+                    }
+                }
+                                 
+                @media screen and (min-width:767px) and (max-width: 992px) {
+                    .carousel{
+                        .carousel-wrapper{
+                            > ul { >li.current{
+                                    width: 50em !important;
+                                }
+                            }
+                        }
+                    }
+                }
+
                 .carousel {
                     display: flex;
-                    height: 100%;
+                    height: 90%;
                     overflow: hidden;
                     position: relative;
-                    margin: .5rem auto;
                     flex-direction: column;
-                
+
+                    .carousel-controls button {
+                        position: absolute;
+                        top: 45%; 
+                        transform: translate-y(-50%);
+                        background: #0002;
+                        border-radius: 100%;
+                        width: 2rem; height:2rem;
+                        border: none; outline: none;
+                        font-size: 1.5em;
+                        z-index:1000;
+                        cursor: pointer; color:#fff;
+                        transition: scale .4s ease-out;
+                        display: flex; align-items:center; justify-content:center;
+
+                        &:hover {scale: .9}
+                        &:nth-child(1){left: 10px;}
+                        &:nth-child(2){right: 10px;}
+                    }
+
                     .carousel-wrapper {
                         height: 100%;
                         overflow: hidden;
@@ -54,6 +92,7 @@ customElements.define('ms-carousel', class extends HTMLElement {
                             position: relative;
                             transition: width .5s ease;
 
+                          
                             &.current {
                                 width: 75em;
                                 figure {
@@ -176,13 +215,17 @@ customElements.define('ms-carousel', class extends HTMLElement {
                     }
                 }
                 }}
+                  
             </style>
           <div  class="carousel">
+            <div class="carousel-controls">
+                <button>&lsaquo;</button>
+                <button>&rsaquo;</button>
+            </div>
             <div  class="carousel-wrapper"></div>
             <ul  class="carousel-paginator"></ul>
         </div>
         `;
-        this.attachShadow({ mode: 'open' }).appendChild(template.content.cloneNode(true))
     }
 
     get $wrapper() {
@@ -196,10 +239,48 @@ customElements.define('ms-carousel', class extends HTMLElement {
     get $paginator() {
         return this.shadowRoot.querySelector('.carousel-paginator')
     }
+    get $prevControl() {
+        return this.shadowRoot.querySelector('.carousel-controls > button:nth-child(1)')
+    }
+    get $nextControl() {
+        return this.shadowRoot.querySelector('.carousel-controls > button:nth-child(2)')
+    }
 
     async connectedCallback() {
-        await this.loadMovies()
-        this.$wrapper.style.width = this.$wrapper.firstElementChild.clientWidth * this.$wrapper.childElementCount + 'px';
+        await this.loadMovies();
+        this.$handleControlDisable();
+        this.$prevControl.addEventListener('click', this.handlePrev.bind(this));
+        this.$nextControl.addEventListener('click', this.handleNext.bind(this));
+        this.$wrapper.style.width = Math.floor(this.$wrapper.firstElementChild.clientWidth * this.$wrapper.childElementCount) + 'px';
+    }
+
+    disconnectedCallback() {
+        this.$prevControl.removeEventListener('click', this.handlePrev);
+        this.$nextControl.removeEventListener('click', this.handleNext);
+    }
+
+    $handleControlDisable(which) {
+        switch (which) {
+            case 0: {
+                this.$prevControl.style.display = 'block';
+                this.$nextControl.style.display = 'block';
+            }
+                break;
+            case 1: {
+                this.$prevControl.style.display = 'none';
+                this.$nextControl.style.display = 'block';
+            }
+                break;
+            case 2: {
+                this.$prevControl.style.display = 'block';
+                this.$nextControl.style.display = 'none';
+            }
+                break;
+            default:
+                this.$prevControl.style.display = 'none';
+                this.$nextControl.style.display = 'none';
+                break;
+        }
     }
 
     $paginate() {
@@ -210,6 +291,13 @@ customElements.define('ms-carousel', class extends HTMLElement {
             this.$paginator.appendChild(li)
         }
         this.autoPaginate()
+    }
+
+    $mqCallback(callbacks) {
+        // const pcMedia = globalThis.matchMedia('(min-width: 1024px)');
+        const mobileMedia = globalThis.matchMedia('(max-width: 425px)').matches;
+        const tabletMedia = globalThis.matchMedia('(min-width:767px) and (max-width: 992px)').matches;
+        (mobileMedia) ? callbacks['mobile']() : (tabletMedia) ? callbacks['tablet']() : callbacks['pc']();
     }
 
     autoPaginate() {
@@ -251,14 +339,23 @@ customElements.define('ms-carousel', class extends HTMLElement {
         }
 
         if (index == 0) {
-            if (this.#currentIndex == 0) {
-                return;
-            }
-            ul.style.marginLeft = '-' + (item.clientWidth * index) - (0) + 'px';
+            ul.style.marginLeft = 10 + 'px';
+            this.$handleControlDisable(1);
         } else if ((index < ul.children.length - 1) && (this.#currentIndex < ul.children.length - 1)) {
-            ul.style.marginLeft = '-' + (item.clientWidth * index) - (-150) + 'px';
-        } else if (index == ul.children.length - 1) {
-            ul.style.marginLeft = '-' + (item.clientWidth * index) - (-250) + 'px';
+            this.$mqCallback({
+                pc: () => ul.style.marginLeft = '-' + (item.clientWidth * index) - (-Math.floor(item.clientWidth / ul.children.length)) + 'px',
+                mobile: () => ul.style.marginLeft = -Math.round(item.clientWidth * index % total_ML) + 'px',
+                tablet: () => ul.style.marginLeft = '-' + (item.clientWidth * index) - (-0) + 'px',
+            });
+            this.$handleControlDisable(0);
+        }
+        else if (index == ul.children.length - 1) {
+            this.$mqCallback({
+                pc: () => ul.style.marginLeft = -(item.clientWidth * (index - 1)) - 150 + 'px',
+                mobile: () => ul.style.marginLeft = -(total_ML - item.clientWidth) - 40 + 'px',
+                tablet: () => ul.style.marginLeft = -(total_ML - item.clientWidth) + 'px',
+            });
+            this.$handleControlDisable(2);
         }
         ul.querySelector('li.loading_trailer')?.classList.remove('loading_trailer');
         ul.querySelector('#trailer')?.remove();
@@ -296,6 +393,22 @@ customElements.define('ms-carousel', class extends HTMLElement {
 
     handleDetail(e) {
         this.dispatchEvent(new CustomEvent('ondetail', { detail: { movies: this.#movies[e.currentTarget.dataset.index] } }))
+    }
+
+    handleNext(e) {
+        e.preventDefault();
+        this.handleLoop('pause');
+        const nextIndex = ++this.#currentIndex;
+        this.handlePaginate(nextIndex, this.$paginator.children[nextIndex]);
+        this.handleLoop('resume');
+    }
+    
+    handlePrev(e) {
+        e.preventDefault();
+        this.handleLoop('pause');
+        const prevIndex = --this.#currentIndex;
+        this.handlePaginate(prevIndex, this.$paginator.children[prevIndex]);
+        this.handleLoop('resume');
     }
 
     handleLoop(action) {
@@ -345,11 +458,12 @@ customElements.define('ms-carousel', class extends HTMLElement {
                 }
                 ul.firstChild.classList.add('current')
                 ul.onmouseenter = (e) => { e.preventDefault(); this.handleLoop('pause'); },
-                    ul.onmouseleave = (e) => { e.preventDefault(); this.handleLoop('resume'); }
+                ul.onmouseleave = (e) => { e.preventDefault(); this.handleLoop('resume'); }
                 ul.querySelectorAll('a.detail').forEach(a => a.onclick = (e) => this.handleDetail(e))
                 ul.querySelectorAll('a.trailer').forEach(a => a.onclick = (e) => this.handleTrailer(e))
                 this.$wrapper.replaceChildren(ul)
                 this.$paginate();
+                this.$handleControlDisable(1)
             }
         }
         catch (error) {
